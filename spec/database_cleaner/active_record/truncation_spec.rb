@@ -5,7 +5,7 @@ require 'database_cleaner/active_record/truncation'
 
 module ActiveRecord
   module ConnectionAdapters
-    [MysqlAdapter, Mysql2Adapter, SQLite3Adapter, JdbcAdapter, PostgreSQLAdapter, IBM_DBAdapter].each do |adapter|
+    [Mysql2Adapter, SQLite3Adapter, JdbcAdapter, PostgreSQLAdapter, IBM_DBAdapter].each do |adapter|
       describe adapter, "#truncate_table" do
         it "responds" do
           adapter.new("foo").should respond_to(:truncate_table)
@@ -31,7 +31,7 @@ module DatabaseCleaner
 
       it "should truncate all tables except for schema_migrations" do
         connection.stub!(:tables).and_return(%w[schema_migrations widgets dogs])
-        
+
         connection.should_receive(:truncate_tables).with(['widgets', 'dogs'])
         Truncation.new.clean
       end
